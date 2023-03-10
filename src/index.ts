@@ -126,3 +126,6 @@ export function createHumanErrors<
 		showErrorTestSync: createErrorTestSync
 	} */
 }
+
+// Export types
+export * from './types'

@@ -1,91 +1,85 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+import { Hero } from '@/components/Hero'
+import { Installation } from '@/components/Installation'
+import { Usage } from '@/components/Usage'
+import { Footer } from '@/components/Footer'
+import { createHumanErrors, ErrorReturnType } from 'human-errors'
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
-const inter = Inter({ subsets: ['latin'] })
+type LogStoreType = {
+	logs: ErrorReturnType[]
+	appendLog: (log: ErrorReturnType) => void
+	clearLogs: () => void
+}
+
+// @ts-ignore
+const useLogStore = create<LogStoreType>(
+	persist(
+		(set, get) => ({
+			logs: [],
+			appendLog: (log: ErrorReturnType) =>
+				set((state) => {
+					return {
+						logs: [...state.logs, log]
+					}
+				}),
+			clearLogs: () => set({ logs: [] })
+		}),
+		{ name: 'log-storage' }
+	)
+)
 
 export default function Home() {
+	const appendLog = useLogStore((state) => state.appendLog)
+
+	const errors = {
+		parameter_unknown: {
+			doc_url: 'https://human.errors/docs/error-codes/parameter-unknown',
+			message: {
+				template: 'Received unknown parameter: {{unknownParameter}}',
+				params: {
+					unknownParameter: 'unknown parameter'
+				}
+			},
+			status_code: 400,
+			type: 'invalid_request_error'
+		},
+		account_invalid: {
+			doc_url: 'https://human.errors/docs/error-codes/account-invalid',
+			message: {
+				template:
+					"The provided key '{{apiKey}}' does not have access to account '{{accountId}}' (or that account does not exist). Application acccess may have been revoked.",
+				params: {
+					apiKey: 'sk_test_4e**********************d6bc',
+					accountId: 'acct_srv8cmtg6'
+				}
+			},
+			status_code: 400,
+			type: 'invalid_request_error'
+		}
+	}
+
+	const humanErrors = createHumanErrors(errors, {
+		transformer: (e) => e,
+		persist: async (e) => {
+			// Generate ID for log
+
+			// appendLog()
+			return e
+		}
+	})
+
+	// TODO: Demo with logs
 	return (
-		<main className={styles.main}>
-			<div className={styles.description}>
-				<p>
-					Get started by editing&nbsp;
-					<code className={styles.code}>src/app/page.tsx</code>
-				</p>
-				<div>
-					<a
-						href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						By{' '}
-						<Image
-							src="/vercel.svg"
-							alt="Vercel Logo"
-							className={styles.vercelLogo}
-							width={100}
-							height={24}
-							priority
-						/>
-					</a>
+		<>
+			<main className="w-[90%] max-w-2xl mx-auto">
+				<Hero />
+				<div className="space-y-16">
+					<Installation />
+					<Usage />
 				</div>
-			</div>
-
-			<div className={styles.center}>
-				<Image
-					className={styles.logo}
-					src="/next.svg"
-					alt="Next.js Logo"
-					width={180}
-					height={37}
-					priority
-				/>
-				<div className={styles.thirteen}>
-					<Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-				</div>
-			</div>
-
-			<div className={styles.grid}>
-				<a
-					href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					className={styles.card}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<h2 className={inter.className}>
-						Docs <span>-&gt;</span>
-					</h2>
-					<p className={inter.className}>
-						Find in-depth information about Next.js features and API.
-					</p>
-				</a>
-
-				<a
-					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					className={styles.card}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<h2 className={inter.className}>
-						Templates <span>-&gt;</span>
-					</h2>
-					<p className={inter.className}>Explore the Next.js 13 playground.</p>
-				</a>
-
-				<a
-					href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					className={styles.card}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<h2 className={inter.className}>
-						Deploy <span>-&gt;</span>
-					</h2>
-					<p className={inter.className}>
-						Instantly deploy your Next.js site to a shareable URL with Vercel.
-					</p>
-				</a>
-			</div>
-		</main>
+			</main>
+			<Footer />
+		</>
 	)
 }

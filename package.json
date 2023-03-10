@@ -2,8 +2,8 @@
 	"name": "human-errors",
 	"version": "0.0.1",
 	"description": "Human friendly errors for your APIs & projects.",
-	"main": "dist/index.js",
-	"module": "dist/index.mjs",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"files": [
 		"dist"
@@ -20,9 +20,9 @@
 		"error-handling"
 	],
 	"scripts": {
-		"dev": "tsup src/index.tsx --watch",
+		"dev": "tsup src/index.ts --watch",
 		"dev:website": "turbo run dev --filter=website...",
-		"build": "tsup src/index.ts --format esm,cjs",
+		"build": "tsup src/index.ts --dts --format esm,cjs",
 		"test": "vitest",
 		"test:coverage": "vitest run --coverage",
 		"prettier-check": "prettier --check .",

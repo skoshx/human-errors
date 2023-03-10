@@ -6,10 +6,6 @@ export type DeepTransformToPrimitives<T> = T extends object
 	? { [P in keyof T]: DeepTransformToPrimitives<T[P]> }
 	: LiteralToPrimitive<T>
 
-/* export type ErrorHandlerOptions<EType = CreateErrorType> = {
-	transformer?: <T>(error: EType) => T;
-} */
-
 type InferReturnType<TErrors> = {
 	[K in keyof TErrors]: TErrors[K] extends (error: any) => infer R ? R : never
 }[keyof TErrors]
@@ -19,8 +15,6 @@ export type TransformWithReturnType<T extends (...args: any) => unknown> = (
 	error: ErrorReturnType
 ) => ReturnType<T>
 export type TransformType = (error: ErrorReturnType) => unknown
-// TODO: this should be able to modify the error? For instance, when adding
-// `request_log_url` to the error etc…
 export type PersistType = (error: ErrorReturnType) => Promise<ErrorReturnType>
 
 export type CreateErrorHandlerOptions<
