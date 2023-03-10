@@ -1,0 +1,44 @@
+{
+	"name": "human-errors",
+	"version": "0.0.1",
+	"description": "Human friendly errors for your APIs & projects.",
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"author": "skoshx <rasmus@skosh.dev>",
+	"license": "MIT",
+	"type": "module",
+	"keywords": [
+		"typescript",
+		"human-friendly",
+		"human",
+		"api",
+		"error",
+		"error-handling"
+	],
+	"scripts": {
+		"dev": "tsup src/index.tsx --watch",
+		"dev:website": "turbo run dev --filter=website...",
+		"build": "tsup src/index.ts --format esm,cjs",
+		"test": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"prettier-check": "prettier --check .",
+		"format": "prettier --write .",
+		"type-check": "tsc --noEmit",
+		"release": "np --preview"
+	},
+	"devDependencies": {
+		"prettier": "^2.8.4",
+		"tsup": "^6.6.3",
+		"turbo": "^1.8.3",
+		"type-fest": "^3.6.1",
+		"typescript": "^4.9.5",
+		"vitest": "^0.29.2"
+	},
+	"dependencies": {
+		"zod": "^3.21.4"
+	}
+}
