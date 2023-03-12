@@ -6,7 +6,7 @@ export function Usage() {
 		<section className="space-y-4">
 			<div className="space-y-1">
 				<Subtitle>Usage</Subtitle>
-				<p>
+				<p className="text-gray-500">
 					Create your errors object once, and use everywhere. One place for all your errors.
 					TypeScript types inferred like magic.
 				</p>
@@ -14,13 +14,13 @@ export function Usage() {
 			<CodeBlock>
 				{`import { createHumanErrors } from 'human-errors'
 
-				// Define your errors object
-				const errors = { ... }
+// Define your errors object
+const errors = { ... }
 
-				const humanErrors = createHumanErrors(errors)
+const humanErrors = createHumanErrors(errors)
 
-				// In your API endpoint
-				return humanErrors.error('invalid_parameters', { missingParameter: 'per_page' })`}
+// In your API endpoint
+return humanErrors.error('invalid_parameters', { missingParameter: 'per_page' })`}
 			</CodeBlock>
 		</section>
 	)

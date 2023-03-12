@@ -6,8 +6,6 @@ import useMeasure from 'react-use-measure'
 import copy from 'copy-to-clipboard'
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion'
 
-// import styles from './code-block.module.css';
-
 const variants = {
 	visible: { opacity: 1, scale: 1 },
 	hidden: { opacity: 0, scale: 0.5 }
@@ -123,7 +121,7 @@ export const CodeBlock = ({
 				</MotionConfig>
 			</button>
 
-			<Highlight {...defaultProps} theme={theme} code={children} language="jsx">
+			<Highlight {...defaultProps} theme={theme} code={children} language="tsx">
 				{({ className, tokens, getLineProps, getTokenProps }) => (
 					<motion.pre
 						className=""
