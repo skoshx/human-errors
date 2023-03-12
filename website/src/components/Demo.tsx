@@ -7,8 +7,9 @@ import { persist } from 'zustand/middleware'
 import { createHumanErrors, ErrorReturnType } from 'human-errors'
 import { Button } from './Button'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { HTMLAttributes, useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
+import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons'
 
 type LogStoreType = {
 	logs: ErrorReturnType[]
@@ -94,8 +95,15 @@ export const smoothSpring = {
 	damping: 60
 }
 
-function LogItem({ children, initialHeight = 0, removeLog }: any) {
+export interface LogItemProps extends HTMLAttributes<HTMLDivElement> {
+	log: ErrorReturnType
+	initialHeight?: number
+	onRemove: () => void
+}
+
+function LogItem({ log, initialHeight = 0, className, onRemove, ...props }: LogItemProps) {
 	const [ref, bounds] = useMeasure()
+	const [isExtended, setExtended] = useState(false)
 	return (
 		<motion.div
 			variants={variants}
@@ -104,21 +112,25 @@ function LogItem({ children, initialHeight = 0, removeLog }: any) {
 			initial="initial"
 			animate="visible"
 			exit="initial"
-			className="rounded-xl relative flex p-2 items-center border border-gray-200 space-x-2"
+			className="rounded-xl relative flex p-2 items-center border border-gray-200 space-x-2 cursor-pointer"
 			key={log.request_log_url ?? log.code}
+			onClick={() => {
+				setExtended(!isExtended)
+			}}
 		>
 			<div className="w-8 h-8 min-w-[32px] rounded-full bg-green-400 bg-gradient-to-br from-red-300 to-red-400"></div>
-			<div className="">
+			<div className="w-[90%]">
 				<p className="font-semibold">{log.code}</p>
 				<p className="text-xs text-gray-600">{log.message}</p>
+				<AnimatePresence>
+					{isExtended && <CodeBlock>{JSON.stringify(log, null, 4)}</CodeBlock>}
+				</AnimatePresence>
 			</div>
 			<div
-				className="rounded-full hover:bg-gray-100 transition-colors absolute cursor-pointer top-2 right-2"
-				onClick={() => {
-					// removeLog(logIndex)
-				}}
+				className="rounded-full p-1 hover:bg-gray-100 transition-colors absolute cursor-pointer top-2 right-2"
+				onClick={onRemove}
 			>
-				X
+				<Cross2Icon className="w-4 h-4" />
 			</div>
 		</motion.div>
 	)
@@ -141,9 +153,6 @@ export function Demo() {
 			return e
 		}
 	})
-
-	console.log('Logs')
-	console.log(logs)
 
 	useEffect(() => {
 		setShowLogs(true) // Gotta love hydration errors
@@ -203,34 +212,16 @@ export function Demo() {
 				{/* Buttons */}
 			</div>
 			<div className="space-y-4">
-				<h1>TODO: Errors here…</h1>
 				<AnimatePresence>
 					{showLogs &&
 						logs.map((log, logIndex) => {
 							return (
-								<motion.div
-									variants={variants}
-									transition={smoothSpring}
-									initial="initial"
-									animate="visible"
-									exit="initial"
-									className="rounded-xl relative flex p-2 items-center border border-gray-200 space-x-2"
-									key={log.request_log_url ?? log.code}
-								>
-									<div className="w-8 h-8 min-w-[32px] rounded-full bg-green-400 bg-gradient-to-br from-red-300 to-red-400"></div>
-									<div className="">
-										<p className="font-semibold">{log.code}</p>
-										<p className="text-xs text-gray-600">{log.message}</p>
-									</div>
-									<div
-										className="rounded-full hover:bg-gray-100 transition-colors absolute cursor-pointer top-2 right-2"
-										onClick={() => {
-											removeLog(logIndex)
-										}}
-									>
-										X
-									</div>
-								</motion.div>
+								<LogItem
+									log={log}
+									onRemove={() => {
+										removeLog(logIndex)
+									}}
+								/>
 							)
 						})}
 				</AnimatePresence>

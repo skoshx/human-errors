@@ -64,7 +64,7 @@ export const CodeBlock = ({
 	}, [])
 
 	return (
-		<div className="flex p-2 relative items-center bg-gradient-to-b from-gray-50 to-gray-100 bg-gray-100 border-gray-200 border rounded-lg">
+		<div className="flex h-max p-2 relative items-center bg-gradient-to-b from-gray-50 to-gray-100 bg-gray-100 border-gray-200 border rounded-lg overflow-hidden">
 			<button
 				className="absolute right-2 top-1 p-1 border border-gray-200 rounded-lg"
 				onClick={onCopy}
