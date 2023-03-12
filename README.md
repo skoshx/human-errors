@@ -5,7 +5,7 @@
 > A tiny error handling library to make your API's more human friendly. Inspired by Stripe's API
 
 [![license](https://img.shields.io/badge/license-MIT-%23000)](https://github.com/skoshx/human-secrets/blob/main/LICENSE.md)
-[![CI](https://github.com/skoshx/human-secrets/actions/workflows/ci.yml/badge.svg)](https://github.com/skoshx/human-secrets/actions/workflows/ci.yml)
+[![CI](https://github.com/skoshx/human-errors/actions/workflows/ci.yml/badge.svg)](https://github.com/skoshx/human-errors/actions/workflows/ci.yml)
 [![prettier](https://img.shields.io/badge/code%20style-prettier-%23000)](https://github.com/prettier/prettier)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-%23000)](https://github.com/skoshx/human-secrets/blob/main/README.md)
 
