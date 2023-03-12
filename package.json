@@ -23,7 +23,7 @@
 		"dev": "tsup src/index.ts --watch",
 		"dev:website": "turbo run dev --filter=website...",
 		"build": "tsup src/index.ts --dts --format esm,cjs",
-		"test": "vitest",
+		"test": "vitest run",
 		"test:coverage": "vitest run --coverage",
 		"prettier-check": "prettier --check .",
 		"format": "prettier --write .",
