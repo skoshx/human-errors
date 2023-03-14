@@ -36,6 +36,10 @@ export type CreateErrorOptions<
 	TTransform extends TransformType
 > = CreateErrorHandlerOptions<TErrors, TTransform> & {
 	request_log_url?: string
+	/**
+	 * Associate the error to some user.
+	 */
+	user?: string
 }
 
 const codes = new Map([
@@ -101,11 +105,9 @@ const codes = new Map([
 type MapKeys<T> = T extends Map<infer K, any> ? K : never
 type MapValues<T> = T extends Map<any, infer V> ? V : never
 
-type ErrorCodes = MapKeys<typeof codes>
-type ErrorValues = MapValues<typeof codes>
+export type ErrorCodes = MapKeys<typeof codes>
+export type ErrorValues = MapValues<typeof codes>
 
 export type ErrorReturnType = z.output<typeof ErrorReturnSchema>
 export type CreateErrorType = z.input<typeof CreateErrorSchema>
 export type TemplateType = z.input<typeof TemplateSchema>
-
-// Transformer types

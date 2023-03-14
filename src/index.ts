@@ -1,7 +1,6 @@
 import { HumanDeveloperError } from './error'
 import { CreateErrorSchema } from './schema'
 import { replaceTemplateString } from './template'
-import { defaultHumanTransformer } from './transform'
 import {
 	CreateErrorHandlerOptions,
 	CreateErrorOptions,
@@ -28,7 +27,7 @@ export function createHumanErrors<
 
 	type TParams<T> = T extends keyof TErrors ? TErrors[T]['message'] : never
 
-	function createError<T extends keyof TErrors>(
+	function _createError<T extends keyof TErrors>(
 		errorCode: T,
 		// @ts-expect-error
 		params: TParams<T> extends string ? undefined : DeepTransformToPrimitives<TParams<T>['params']>,
@@ -76,20 +75,19 @@ export function createHumanErrors<
 			...((errors[errorCode] as CreateErrorType).type && {
 				type: (errors[errorCode] as CreateErrorType).type
 			}),
-			...(options.request_log_url && { request_log_url: options.request_log_url })
+			...(options.request_log_url && { request_log_url: options.request_log_url }),
+			...(options.user && { user: options.user })
 		}
-		// return { code: 'INTERNAL_SERVER_ERROR', message: 'Hello world' }
 		return error
 	}
 
-	// type InferTransformerReturnValue<T> = T extends (error: any) => infer R ? R : never;
-
-	async function createErrorTest<T extends keyof TErrors>(
+	async function createError<T extends keyof TErrors>(
 		errorCode: T,
 		// @ts-expect-error
-		params: TParams<T> extends string ? undefined : DeepTransformToPrimitives<TParams<T>['params']>
+		params: TParams<T> extends string ? undefined : DeepTransformToPrimitives<TParams<T>['params']>,
+		options: CreateErrorOptions<TErrors, TTransform> = {}
 	) {
-		let error = createError(errorCode, params)
+		let error = _createError(errorCode, params, options)
 
 		// Run through persist…
 		if (opts.persist) error = await opts.persist(error)
@@ -98,12 +96,13 @@ export function createHumanErrors<
 		return opts.transformer(error) as ReturnType<TTransform>
 	}
 
-	function createErrorTestSync<T extends keyof TErrors>(
+	function createErrorSync<T extends keyof TErrors>(
 		errorCode: T,
 		// @ts-expect-error
-		params: TParams<T> extends string ? undefined : DeepTransformToPrimitives<TParams<T>['params']>
+		params: TParams<T> extends string ? undefined : DeepTransformToPrimitives<TParams<T>['params']>,
+		options: CreateErrorOptions<TErrors, TTransform> = {}
 	) {
-		let error = createError(errorCode, params)
+		let error = _createError(errorCode, params, options)
 
 		// Run through persist…
 		if (opts.persist) opts.persist(error)
@@ -113,18 +112,13 @@ export function createHumanErrors<
 	}
 
 	return {
-		error: createErrorTest,
+		error: createError,
 		/**
 		 * This function can be used if you don't need to persist your
 		 * error responses, or if you just need an escape hatch to avoid `await`
 		 */
-		errorSync: createErrorTestSync
+		errorSync: createErrorSync
 	}
-
-	/* return {
-		showErrorTest: createErrorTest,
-		showErrorTestSync: createErrorTestSync
-	} */
 }
 
 // Export types
