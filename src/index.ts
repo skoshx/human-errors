@@ -1,6 +1,7 @@
 import { HumanDeveloperError } from './error'
 import { CreateErrorSchema } from './schema'
 import { replaceTemplateString } from './template'
+import errorToJSON from 'error-to-json'
 import {
 	CreateErrorHandlerOptions,
 	CreateErrorOptions,
@@ -65,6 +66,23 @@ export function createHumanErrors<
 			)
 		}
 
+		/* console.log("ERROR .")
+		console.log(options.error)
+		console.log("JSOn ")
+		console.log(errorToJSON(options.error)) */
+
+		try {
+			/* console.log("ERROR .")
+			console.log(options.error)
+			console.log("JSOn ") */
+			// console.log(errorToJSON(options.error))
+			// const pizza = errorToJSON(options.error)
+			// console.log("PIZZA ")
+			// console.log(pizza)
+		} catch (e) {
+			// console.log("Caught ")
+		}
+
 		const error: ErrorReturnType = {
 			code: String(errorCode),
 			message: String(errorMessage),
@@ -76,8 +94,11 @@ export function createHumanErrors<
 				type: (errors[errorCode] as CreateErrorType).type
 			}),
 			...(options.request_log_url && { request_log_url: options.request_log_url }),
-			...(options.user && { user: options.user })
+			...(options.user && { user: options.user }),
+			...(options.error && { error: errorToJSON(options.error) })
 		}
+		// console.log("ERORR :")
+		// console.log(error)
 		return error
 	}
 
@@ -91,6 +112,9 @@ export function createHumanErrors<
 
 		// Run through persist…
 		if (opts.persist) error = await opts.persist(error)
+
+		// Remove `error` so we don't leak any errors to users
+		delete error['error']
 
 		// @ts-expect-error
 		return opts.transformer(error) as ReturnType<TTransform>

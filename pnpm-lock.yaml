@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  error-to-json: ^2.0.0
   prettier: ^2.8.4
   tsup: ^6.6.3
   turbo: ^1.8.3
@@ -10,6 +11,7 @@ specifiers:
   zod: ^3.21.4
 
 dependencies:
+  error-to-json: 2.0.0
   zod: 3.21.4
 
 devDependencies:
@@ -920,6 +922,15 @@ packages:
       }
     dev: true
 
+  /error-to-json/2.0.0:
+    resolution:
+      {
+        integrity: sha512-otH3QFto04cmkAjQwZTB1xFCF0rR/scHjL2U9yrmZNh/jNieJiNSP5ybvjCCaaUHaZ5nQD33SfGhWNyzsZR9EQ==
+      }
+    dependencies:
+      fast-safe-stringify: 2.1.1
+    dev: false
+
   /esbuild/0.16.17:
     resolution:
       {
@@ -1017,6 +1028,13 @@ packages:
       merge2: 1.4.1
       micromatch: 4.0.5
     dev: true
+
+  /fast-safe-stringify/2.1.1:
+    resolution:
+      {
+        integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==
+      }
+    dev: false
 
   /fastq/1.15.0:
     resolution:

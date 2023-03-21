@@ -40,6 +40,10 @@ export type CreateErrorOptions<
 	 * Associate the error to some user.
 	 */
 	user?: string
+	/**
+	 * Add the error object to the error log. The error will get turned to a JSON object.
+	 */
+	error?: any
 }
 
 const codes = new Map([

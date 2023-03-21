@@ -5,9 +5,11 @@ export const ErrorReturnSchema = z.object({
 	doc_url: z.string().optional(),
 	message: z.string(),
 	param: z.string().optional(),
-	request_log_url: z.string().optional(),
 	status_code: z.number(),
-	type: z.string().optional()
+	type: z.string().optional(),
+	request_log_url: z.string().optional(),
+	user: z.string().optional(),
+	error: z.any().optional()
 })
 
 export const TemplateSchema = z.object({
