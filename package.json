@@ -1,6 +1,6 @@
 {
 	"name": "human-errors",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Human friendly errors for your APIs & projects.",
 	"main": "dist/index.cjs",
 	"module": "dist/index.js",
