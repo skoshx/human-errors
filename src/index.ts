@@ -1,7 +1,6 @@
-import { HumanDeveloperError } from './error'
+import { errorToJson, HumanDeveloperError } from './error'
 import { CreateErrorSchema } from './schema'
 import { replaceTemplateString } from './template'
-import errorToJSON from 'error-to-json'
 import {
 	CreateErrorHandlerOptions,
 	CreateErrorOptions,
@@ -95,10 +94,8 @@ export function createHumanErrors<
 			}),
 			...(options.request_log_url && { request_log_url: options.request_log_url }),
 			...(options.user && { user: options.user }),
-			...(options.error && { error: errorToJSON(options.error) })
+			...(options.error && { error: errorToJson(options.error) })
 		}
-		// console.log("ERORR :")
-		// console.log(error)
 		return error
 	}
 
